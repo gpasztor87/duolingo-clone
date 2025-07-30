@@ -1,12 +1,9 @@
-import { GrammarCategory } from '@/types/grammarRule'
+import { Validator } from '@/types/grammarRule'
 
 const subjectPronouns = new Set(['i', 'you', 'he', 'she', 'we', 'they', 'it'])
 const objectPronouns = new Set(['me', 'you', 'him', 'her', 'us', 'them', 'it'])
 
-export function checkPronouns(
-  correct: string,
-  user: string,
-): GrammarCategory | null {
+export const checkPronouns: Validator = async (correct, user) => {
   const cleanWord = (w: string) =>
     w.toLowerCase().replace(/^[^\w]+|[^\w]+$/g, '')
 

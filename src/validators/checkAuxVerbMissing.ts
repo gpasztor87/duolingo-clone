@@ -1,4 +1,4 @@
-import { GrammarCategory } from '@/types/grammarRule'
+import { Validator } from '@/types/grammarRule'
 
 const auxVerbs = new Set([
   'do',
@@ -15,10 +15,7 @@ const auxVerbs = new Set([
   'must',
 ])
 
-export function checkAuxVerbMissing(
-  correct: string,
-  user: string,
-): GrammarCategory | null {
+export const checkAuxVerbMissing: Validator = async (correct, user) => {
   const clean = (w: string) => w.toLowerCase().replace(/^[^\w]+|[^\w]+$/g, '')
 
   const correctWords = correct.split(/\s+/).map(clean)

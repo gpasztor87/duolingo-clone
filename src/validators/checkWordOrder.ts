@@ -1,9 +1,6 @@
-import { GrammarCategory } from '@/types/grammarRule'
+import { Validator } from '@/types/grammarRule'
 
-export function checkWordOrder(
-  correct: string,
-  user: string,
-): GrammarCategory | null {
+export const checkWordOrder: Validator = async (correct, user) => {
   const cleanWord = (w: string) =>
     w.toLowerCase().replace(/^[^\w]+|[^\w]+$/g, '')
 

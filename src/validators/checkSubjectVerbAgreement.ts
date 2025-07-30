@@ -1,9 +1,6 @@
-import { GrammarCategory } from '@/types/grammarRule'
+import { Validator } from '@/types/grammarRule'
 
-export function checkSubjectVerbAgreement(
-  correct: string,
-  user: string,
-): GrammarCategory | null {
+export const checkSubjectVerbAgreement: Validator = async (correct, user) => {
   const regex = /\b(he|she|it)\b\s+(\w+)/i
   const correctMatch = correct.toLowerCase().match(regex)
   const userMatch = user.toLowerCase().match(regex)

@@ -1,43 +1,21 @@
-import { checkSubjectVerbAgreement } from '@/validators/checkSubjectVerbAgreement'
-import { checkCapitalization } from '@/validators/checkCapitalization'
-import { checkArticleUsage } from '@/validators/checkArticleUsage'
-import { checkPunctuation } from '@/validators/checkPunctuation'
-import { checkPlural } from '@/validators/checkPlural'
-import { checkWordOrder } from '@/validators/checkWordOrder'
-import { checkPronouns } from '@/validators/checkPronouns'
-import { checkPrepositions } from '@/validators/checkPrepositions'
-import { checkNegation } from '@/validators/checkNegation'
-import { checkVerbTense } from '@/validators/checkVerbTense'
-import { checkAuxVerbMissing } from '@/validators/checkAuxVerbMissing'
+import { Violation } from '@/types/grammarRule'
+import { grammarRules } from '@/data/grammarRules'
 
-type Validator = (correct: string, user: string) => string | null
-
-const validators: Validator[] = [
-  checkSubjectVerbAgreement,
-  checkCapitalization,
-  checkArticleUsage,
-  checkPunctuation,
-  checkPlural,
-  checkWordOrder,
-  checkPronouns,
-  checkPrepositions,
-  checkNegation,
-  checkVerbTense,
-  checkAuxVerbMissing,
-]
-
-export function detectGrammarRuleViolations(
+export async function detectGrammarRuleViolations(
   correct: string,
   user: string,
-): string[] {
-  const violations: string[] = []
+): Promise<Violation[]> {
+  const results = await Promise.all(
+    grammarRules.map(async (rule) => {
+      const result = await rule.validator(correct, user)
+      return result
+        ? {
+            code: rule.category,
+            description: rule.description,
+          }
+        : null
+    }),
+  )
 
-  for (const validator of validators) {
-    const violationCode = validator(correct, user)
-    if (violationCode && !violations.includes(violationCode)) {
-      violations.push(violationCode)
-    }
-  }
-
-  return violations
+  return results.filter((r): r is NonNullable<typeof r> => r !== null)
 }

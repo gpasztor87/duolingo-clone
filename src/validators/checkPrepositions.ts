@@ -1,9 +1,6 @@
-import { GrammarCategory } from '@/types/grammarRule'
+import { Validator } from '@/types/grammarRule'
 
-export function checkPrepositions(
-  correct: string,
-  user: string,
-): GrammarCategory | null {
+export const checkPrepositions: Validator = async (correct, user) => {
   const commonMistakes = [
     { expected: 'good at', wrong: 'good in' },
     { expected: 'interested in', wrong: 'interested on' },

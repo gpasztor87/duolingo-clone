@@ -10,9 +10,21 @@ export type GrammarCategory =
   | 'punctuation_period_missing'
   | 'verb_tense_past_simple'
   | 'aux_verb_missing'
+  | 'excessive_punctuation'
+
+export type Validator = (
+  correct: string,
+  user: string,
+) => Promise<GrammarCategory | null>
 
 export interface GrammarRule {
-  id: GrammarCategory
   name: string
+  description: string
+  category: GrammarCategory
+  validator: Validator
+}
+
+export interface Violation {
+  code: string
   description: string
 }

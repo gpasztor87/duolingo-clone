@@ -1,9 +1,6 @@
-import { GrammarCategory } from '@/types/grammarRule'
+import { Validator } from '@/types/grammarRule'
 
-export function checkPlural(
-  correct: string,
-  user: string,
-): GrammarCategory | null {
+export const checkPlural: Validator = async (correct, user) => {
   const cleanWord = (w: string) => w.replace(/[.,!?;:]$/, '')
 
   const correctWords = correct.toLowerCase().split(/\s+/)

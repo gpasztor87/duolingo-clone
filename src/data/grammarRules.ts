@@ -1,65 +1,96 @@
 import { GrammarRule } from '@/types/grammarRule'
+import {
+  checkArticleUsage,
+  checkAuxVerbMissing,
+  checkCapitalization,
+  checkExcessivePunctuation,
+  checkNegation,
+  checkPlural,
+  checkPrepositions,
+  checkPronouns,
+  checkPunctuation,
+  checkSubjectVerbAgreement,
+  checkVerbTense,
+  checkWordOrder,
+} from '@/validators'
 
 export const grammarRules: GrammarRule[] = [
   {
-    id: 'sv_agreement_3rd_person_present',
+    category: 'sv_agreement_3rd_person_present',
     name: '3rd person singular -s',
     description:
       "In present simple tense, verbs with 'he/she/it' require an -s ending.",
+    validator: checkSubjectVerbAgreement,
   },
   {
-    id: 'missing_article',
+    category: 'missing_article',
     name: 'Missing article before noun',
     description:
       "Common countable nouns need an article ('a/an/the') before them.",
+    validator: checkArticleUsage,
   },
   {
-    id: 'plural_s_missing',
+    category: 'plural_s_missing',
     name: 'Missing -s for plural noun',
     description: 'Regular plural nouns in English usually end with -s.',
+    validator: checkPlural,
   },
   {
-    id: 'word_order_adjective_noun',
+    category: 'word_order_adjective_noun',
     name: 'Adjective comes before noun',
     description: 'In English, adjectives usually precede the noun they modify.',
+    validator: checkWordOrder,
   },
   {
-    id: 'subject_object_pronoun_confusion',
+    category: 'subject_object_pronoun_confusion',
     name: 'Confusion between subject and object pronouns',
     description:
       'Use subject pronouns (I, he, she) in subject position, object pronouns (me, him, her) in object position.',
+    validator: checkPronouns,
   },
   {
-    id: 'preposition_incorrect',
+    category: 'preposition_incorrect',
     name: 'Incorrect preposition',
     description: 'Some verbs require specific prepositions.',
+    validator: checkPrepositions,
   },
   {
-    id: 'negation_missing_does_not',
+    category: 'negation_missing_does_not',
     name: "Missing 'does not' for negation",
     description:
       "Negative present simple with 'he/she/it' uses 'does not' + base verb.",
+    validator: checkNegation,
   },
   {
-    id: 'capitalization_start',
+    category: 'capitalization_start',
     name: 'Sentence must start with capital letter',
     description: 'All English sentences begin with a capital letter.',
+    validator: checkCapitalization,
   },
   {
-    id: 'punctuation_period_missing',
+    category: 'punctuation_period_missing',
     name: 'Missing period at end of sentence',
     description: 'Sentences should end with a period (full stop).',
+    validator: checkPunctuation,
   },
   {
-    id: 'verb_tense_past_simple',
+    category: 'verb_tense_past_simple',
     name: 'Incorrect verb tense (past)',
     description:
       'Use past tense forms of regular and irregular verbs when describing past actions.',
+    validator: checkVerbTense,
   },
   {
-    id: 'aux_verb_missing',
+    category: 'aux_verb_missing',
     name: 'Missing auxiliary verb in question',
     description:
       "An auxiliary verb is missing at the beginning of a question (e.g. 'Do you like...?').",
+    validator: checkAuxVerbMissing,
+  },
+  {
+    category: 'excessive_punctuation',
+    name: 'Excessive Punctuation',
+    description: 'There are unnecessary repeated punctuation marks.',
+    validator: checkExcessivePunctuation,
   },
 ]

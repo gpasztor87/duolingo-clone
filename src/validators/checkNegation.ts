@@ -1,9 +1,6 @@
-import { GrammarCategory } from '@/types/grammarRule'
+import { Validator } from '@/types/grammarRule'
 
-export function checkNegation(
-  correct: string,
-  user: string,
-): GrammarCategory | null {
+export const checkNegation: Validator = async (correct, user) => {
   const correctHas = correct.toLowerCase().includes('does not')
   const userHas = user.toLowerCase().includes('does not')
 

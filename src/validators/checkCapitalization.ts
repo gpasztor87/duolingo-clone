@@ -1,9 +1,6 @@
-import { GrammarCategory } from '@/types/grammarRule'
+import { Validator } from '@/types/grammarRule'
 
-export function checkCapitalization(
-  _: string,
-  user: string,
-): GrammarCategory | null {
+export const checkCapitalization: Validator = async (_, user) => {
   const firstChar = user.trim().charAt(0)
 
   if (firstChar && firstChar === firstChar.toLowerCase()) {

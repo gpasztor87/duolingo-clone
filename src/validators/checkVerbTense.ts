@@ -1,9 +1,6 @@
-import { GrammarCategory } from '@/types/grammarRule'
+import { Validator } from '@/types/grammarRule'
 
-export function checkVerbTense(
-  correct: string,
-  user: string,
-): GrammarCategory | null {
+export const checkVerbTense: Validator = async (correct, user) => {
   const irregularPairs = [
     { past: 'went', base: 'go' },
     { past: 'ate', base: 'eat' },

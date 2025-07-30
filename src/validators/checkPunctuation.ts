@@ -1,9 +1,6 @@
-import { GrammarCategory } from '@/types/grammarRule'
+import { Validator } from '@/types/grammarRule'
 
-export function checkPunctuation(
-  correct: string,
-  user: string,
-): GrammarCategory | null {
+export const checkPunctuation: Validator = async (correct, user) => {
   const endsWithPeriod = correct.trim().endsWith('.')
   const userEndsWithPeriod = user.trim().endsWith('.')
 
