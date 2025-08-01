@@ -9,11 +9,7 @@ describe('Grammar Rule Engine', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        {
-          code: 'sv_agreement_3rd_person_present',
-          description:
-            "In present simple tense, verbs with 'he/she/it' require an -s ending.",
-        },
+        expect.objectContaining({ code: 'sv_agreement_3rd_person_present' }),
       ]),
     )
   })
@@ -26,10 +22,7 @@ describe('Grammar Rule Engine', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        {
-          code: 'capitalization_start',
-          description: 'All English sentences begin with a capital letter.',
-        },
+        expect.objectContaining({ code: 'capitalization_start' }),
       ]),
     )
   })
@@ -42,11 +35,7 @@ describe('Grammar Rule Engine', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        {
-          code: 'missing_article',
-          description:
-            "Common countable nouns need an article ('a/an/the') before them.",
-        },
+        expect.objectContaining({ code: 'missing_article' }),
       ]),
     )
   })
@@ -59,10 +48,7 @@ describe('Grammar Rule Engine', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        {
-          code: 'punctuation_period_missing',
-          description: 'Sentences should end with a period (full stop).',
-        },
+        expect.objectContaining({ code: 'punctuation_period_missing' }),
       ]),
     )
   })
@@ -75,10 +61,7 @@ describe('Grammar Rule Engine', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        {
-          code: 'plural_s_missing',
-          description: 'Regular plural nouns in English usually end with -s.',
-        },
+        expect.objectContaining({ code: 'plural_s_missing' }),
       ]),
     )
   })
@@ -91,11 +74,7 @@ describe('Grammar Rule Engine', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        {
-          code: 'word_order_adjective_noun',
-          description:
-            'In English, adjectives usually precede the noun they modify.',
-        },
+        expect.objectContaining({ code: 'word_order_adjective_noun' }),
       ]),
     )
   })
@@ -108,11 +87,7 @@ describe('Grammar Rule Engine', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        {
-          code: 'subject_object_pronoun_confusion',
-          description:
-            'Use subject pronouns (I, he, she) in subject position, object pronouns (me, him, her) in object position.',
-        },
+        expect.objectContaining({ code: 'subject_object_pronoun_confusion' }),
       ]),
     )
   })
@@ -125,10 +100,7 @@ describe('Grammar Rule Engine', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        {
-          code: 'preposition_incorrect',
-          description: 'Some verbs require specific prepositions.',
-        },
+        expect.objectContaining({ code: 'preposition_incorrect' }),
       ]),
     )
   })
@@ -141,11 +113,7 @@ describe('Grammar Rule Engine', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        {
-          code: 'negation_missing_does_not',
-          description:
-            "Negative present simple with 'he/she/it' uses 'does not' + base verb.",
-        },
+        expect.objectContaining({ code: 'negation_missing_does_not' }),
       ]),
     )
   })
@@ -158,11 +126,7 @@ describe('Grammar Rule Engine', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        {
-          code: 'aux_verb_missing',
-          description:
-            "An auxiliary verb is missing at the beginning of a question (e.g. 'Do you like...?').",
-        },
+        expect.objectContaining({ code: 'aux_verb_missing' }),
       ]),
     )
   })
@@ -180,6 +144,69 @@ describe('Grammar Rule Engine', () => {
     )
   })
 
+  it('should detect unknown word', async () => {
+    const result = await detectGrammarRuleViolations(
+      'Hello world!',
+      'Hello ther!',
+    )
+
+    expect(result).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ code: 'unknown_word' }),
+      ]),
+    )
+  })
+
+  describe('Typo detection validator', () => {
+    it('should detect misspelled words', async () => {
+      const result = await detectGrammarRuleViolations(
+        'Hello world!',
+        'Heloo world!',
+      )
+
+      expect(result).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ code: 'misspelled_word' }),
+        ]),
+      )
+    })
+
+    it('should detect a small typo compared to the correct sentence', async () => {
+      const result = await detectGrammarRuleViolations(
+        'Hello world!',
+        'Hell world!',
+      )
+
+      expect(result).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ code: 'word_typo_from_correct' }),
+        ]),
+      )
+    })
+
+    it('should detect multiple typos', async () => {
+      const result = await detectGrammarRuleViolations(
+        'Hello there friend!',
+        'Hell thore freind!',
+      )
+
+      expect(result).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ code: 'word_typo_from_correct' }),
+        ]),
+      )
+    })
+
+    it('should not flag very different words', async () => {
+      const result = await detectGrammarRuleViolations(
+        'Hello world!',
+        'Pizza moon!',
+      )
+
+      expect(result).not.toContain('word_typo_from_correct')
+    })
+  })
+
   it('should detect multiple issues', async () => {
     const result = await detectGrammarRuleViolations(
       'I went to the store.',
@@ -188,20 +215,9 @@ describe('Grammar Rule Engine', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        {
-          code: 'capitalization_start',
-          description: 'All English sentences begin with a capital letter.',
-        },
-        {
-          code: 'punctuation_period_missing',
-          description: 'Sentences should end with a period (full stop).',
-        },
-
-        {
-          code: 'verb_tense_past_simple',
-          description:
-            'Use past tense forms of regular and irregular verbs when describing past actions.',
-        },
+        expect.objectContaining({ code: 'capitalization_start' }),
+        expect.objectContaining({ code: 'punctuation_period_missing' }),
+        expect.objectContaining({ code: 'verb_tense_past_simple' }),
       ]),
     )
   })

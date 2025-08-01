@@ -1,14 +1,16 @@
+import { stripPunctuation } from '@/lib/utils'
 import { Validator } from '@/types/grammarRule'
 
 const subjectPronouns = new Set(['i', 'you', 'he', 'she', 'we', 'they', 'it'])
 const objectPronouns = new Set(['me', 'you', 'him', 'her', 'us', 'them', 'it'])
 
 export const checkPronouns: Validator = async (correct, user) => {
-  const cleanWord = (w: string) =>
-    w.toLowerCase().replace(/^[^\w]+|[^\w]+$/g, '')
+  const correctWords = correct
+    .split(/\s+/)
+    .map(stripPunctuation)
+    .filter(Boolean)
 
-  const correctWords = correct.split(/\s+/).map(cleanWord)
-  const userWords = user.split(/\s+/).map(cleanWord)
+  const userWords = user.split(/\s+/).map(stripPunctuation).filter(Boolean)
 
   const len = Math.min(correctWords.length, userWords.length)
 

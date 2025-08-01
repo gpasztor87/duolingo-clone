@@ -8,3 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function normalize(text: string) {
   return text.trim().toLowerCase()
 }
+
+export function stripPunctuation(word: string) {
+  return word.replace(/[.,!?;:()"]/g, '')
+}

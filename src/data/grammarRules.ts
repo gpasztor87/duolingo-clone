@@ -4,12 +4,15 @@ import {
   checkAuxVerbMissing,
   checkCapitalization,
   checkExcessivePunctuation,
+  checkMisspelledWords,
   checkNegation,
   checkPlural,
   checkPrepositions,
   checkPronouns,
   checkPunctuation,
   checkSubjectVerbAgreement,
+  checkTypoComparedToCorrect,
+  checkUnknownWords,
   checkVerbTense,
   checkWordOrder,
 } from '@/validators'
@@ -92,5 +95,24 @@ export const grammarRules: GrammarRule[] = [
     name: 'Excessive Punctuation',
     description: 'There are unnecessary repeated punctuation marks.',
     validator: checkExcessivePunctuation,
+  },
+  {
+    category: 'unknown_word',
+    name: 'Unknown or Unexpected Word',
+    description: 'There is a word that does not match the expected vocabulary.',
+    validator: checkUnknownWords,
+  },
+  {
+    category: 'misspelled_word',
+    name: 'Misspelled Word',
+    description: 'There is a word that appears to be misspelled.',
+    validator: checkMisspelledWords,
+  },
+  {
+    category: 'word_typo_from_correct',
+    name: 'Incorrect Word',
+    description:
+      'A word differs slightly from the correct sentence, possibly a typo.',
+    validator: checkTypoComparedToCorrect,
   },
 ]

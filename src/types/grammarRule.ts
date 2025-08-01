@@ -11,6 +11,9 @@ export type GrammarCategory =
   | 'verb_tense_past_simple'
   | 'aux_verb_missing'
   | 'excessive_punctuation'
+  | 'unknown_word'
+  | 'misspelled_word'
+  | 'word_typo_from_correct'
 
 export type Validator = (
   correct: string,

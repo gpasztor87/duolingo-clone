@@ -1,11 +1,13 @@
+import { stripPunctuation } from '@/lib/utils'
 import { Validator } from '@/types/grammarRule'
 
 export const checkWordOrder: Validator = async (correct, user) => {
-  const cleanWord = (w: string) =>
-    w.toLowerCase().replace(/^[^\w]+|[^\w]+$/g, '')
+  const correctWords = correct
+    .split(/\s+/)
+    .map(stripPunctuation)
+    .filter(Boolean)
 
-  const correctWords = correct.split(/\s+/).map(cleanWord)
-  const userWords = user.split(/\s+/).map(cleanWord)
+  const userWords = user.split(/\s+/).map(stripPunctuation).filter(Boolean)
 
   const userWordSet = new Set(userWords)
 
